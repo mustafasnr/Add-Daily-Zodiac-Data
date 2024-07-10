@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burçlar Input Formu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Burçlar Input Formu</h1>
+        <form id="zodiacForm">
+            <div class="form-group">
+                <label for="aries">Koç Burcu Açıklama:</label>
+                <textarea id="aries" name="aries" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="taurus">Boğa Burcu Açıklama:</label>
+                <textarea id="taurus" name="taurus" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="gemini">İkizler Burcu Açıklama:</label>
+                <textarea id="gemini" name="gemini" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="cancer">Yengeç Burcu Açıklama:</label>
+                <textarea id="cancer" name="cancer" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="leo">Aslan Burcu Açıklama:</label>
+                <textarea id="leo" name="leo" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="virgo">Başak Burcu Açıklama:</label>
+                <textarea id="virgo" name="virgo" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="libra">Terazi Burcu Açıklama:</label>
+                <textarea id="libra" name="libra" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="scorpio">Akrep Burcu Açıklama:</label>
+                <textarea id="scorpio" name="scorpio" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sagittarius">Yay Burcu Açıklama:</label>
+                <textarea id="sagittarius" name="sagittarius" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="capricorn">Oğlak Burcu Açıklama:</label>
+                <textarea id="capricorn" name="capricorn" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="aquarius">Kova Burcu Açıklama:</label>
+                <textarea id="aquarius" name="aquarius" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pisces">Balık Burcu Açıklama:</label>
+                <textarea id="pisces" name="pisces" required></textarea>
+            </div>
+            
+            <button id="submitdata" type="submit">Gönder</button>
+        </form>
+    </div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, setDoc, doc,addDoc ,collection} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "****",
+          authDomain: "****",
+          projectId: "****",
+          storageBucket: "****",
+          messagingSenderId: "****",
+          appId: "****",
+          measurementId: "****"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Add event listener to the form
+        document.getElementById('submitdata').addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Get the current date in yyyy-aa-gg format
+            const today = new Date().toISOString().slice(0, 10);
+            const burclar=["KOC","BOGA","IKIZLER","YENGEC","ASLAN","BASAK","TERAZI","AKREP","YAY","OGLAK","KOVA","BALIK"]
+            // Get form values
+            const aries = {name:"koc",context:document.getElementById('aries').value.toString()};
+            const taurus = {name:"boga",context:document.getElementById('taurus').value.toString()};
+            const gemini = {name:"ikizler",context:document.getElementById('gemini').value.toString()};
+            const cancer = {name:"yengec",context:document.getElementById('cancer').value.toString()};
+            const leo = {name:"aslan",context:document.getElementById('leo').value.toString()};
+            const virgo = {name:"basak",context:document.getElementById('virgo').value.toString()};
+            const libra = {name:"terazi",context:document.getElementById('libra').value.toString()};
+            const scorpio = {name:"akrep",context:document.getElementById('scorpio').value.toString()};
+            const sagittarius = {name:"yay",context:document.getElementById('sagittarius').value.toString()};
+            const capricorn = {name:"oglak",context:document.getElementById('capricorn').value.toString()};
+            const aquarius = {name:"kova",context:document.getElementById('aquarius').value.toString()};
+            const pisces = {name:"balik",context:document.getElementById('pisces').value.toString()};
+
+            const zodiacData=[aries,taurus,gemini,cancer,leo,virgo,libra,scorpio,sagittarius,capricorn,aquarius,pisces]
+            for (let index = 0; index < burclar.length; index++) {
+                try {
+                    // Add the document to the Firestore
+                    await setDoc(doc(db, "GUNLUK_YORUMLAR",today,"BURCLAR",burclar[index]), zodiacData[index]);
+                    
+                    console.log("Document successfully written!");
+                } catch (error) {
+                    console.error("Error writing document: ", error);
+                    return
+                }
+            }
+            alert("Ekleme Başarılı")
+        });
+    </script>
+</body>
+</html>
